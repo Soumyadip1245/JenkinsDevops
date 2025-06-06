@@ -239,38 +239,49 @@ queue.offer(10);  // add to rear
 int front = queue.poll();  // remove from front
 int peek = queue.peek();   // see front without removing
 
-// Circular Queue Implementation
-class CircularQueue {
-    private int[] queue;
-    private int front, rear, size, capacity;
-    
-    public CircularQueue(int capacity) {
-        this.capacity = capacity;
-        this.queue = new int[capacity];
-        this.front = 0;
-        this.rear = -1;
-        this.size = 0;
+class Node {
+    int val;
+    Node next;
+
+    public Node(int val) {
+        this.val = val;
     }
-    
-    boolean enqueue(int val) {
-        if (isFull()) return false;
-        rear = (rear + 1) % capacity;
-        queue[rear] = val;
-        size++;
-        return true;
-    }
-    
-    int dequeue() {
-        if (isEmpty()) return -1;
-        int val = queue[front];
-        front = (front + 1) % capacity;
-        size--;
-        return val;
-    }
-    
-    boolean isEmpty() { return size == 0; }
-    boolean isFull() { return size == capacity; }
 }
+
+public class Queue {
+    private Node front, rear;
+
+    public void enqueue(int val) {
+        Node newNode = new Node(val);
+        if (rear == null) {
+            front = rear = newNode;
+            return;
+        }
+        rear.next = newNode;
+        rear = newNode;
+    }
+
+    public void dequeue() {
+        if (front == null) {
+            System.out.println("Queue is empty.");
+            return;
+        }
+        front = front.next;
+        if (front == null) rear = null;
+    }
+
+    public void peek() {
+        if (front != null)
+            System.out.println(front.val);
+        else
+            System.out.println("Queue is empty.");
+    }
+
+    public boolean isEmpty() {
+        return front == null;
+    }
+}
+
 ```
 
 ### Priority Queue Implementation
